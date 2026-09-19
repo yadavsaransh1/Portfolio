@@ -6,26 +6,39 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeFilter, setActiveFilter] = useState('Selected work')
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('portfolio-theme') === 'dark')
+  const [activeSlide, setActiveSlide] = useState(0)
   const filters = ['Selected work', 'Full-stack application', 'Data application']
   const visibleProjects = activeFilter === 'Selected work' ? projects : projects.filter((project) => project.type === activeFilter)
+  const heroSlides = [
+    { image: '/images/profile.jpeg', label: 'Profile' },
+    { image: '/images/profile2.jpeg', label: 'Library' },
+    { image: '/images/profile3.jpeg', label: 'Full' },
+  ]
 
   useEffect(() => {
     document.documentElement.dataset.theme = darkMode ? 'dark' : 'light'
     localStorage.setItem('portfolio-theme', darkMode ? 'dark' : 'light')
   }, [darkMode])
 
+  useEffect(() => {
+    const sliderTimer = window.setInterval(() => {
+      setActiveSlide((currentSlide) => (currentSlide + 1) % heroSlides.length)
+    }, 5000)
+    return () => window.clearInterval(sliderTimer)
+  }, [heroSlides.length])
+
   return (
     <div className="site-shell">
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label={`${profile.name} home`}>{profile.initials}<span>.</span></a>
         <button className="menu-toggle" type="button" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span>{menuOpen ? 'Close' : 'Menu'}</span><i aria-hidden="true">{menuOpen ? 'x' : '+'}</i></button>
-        <nav className={menuOpen ? 'nav-links is-open' : 'nav-links'} aria-label="Main navigation"><a href="#work" onClick={() => setMenuOpen(false)}>Projects</a><a href="#about" onClick={() => setMenuOpen(false)}>About</a><a href="#experience" onClick={() => setMenuOpen(false)}>Experience</a><a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a></nav>
+        <nav className={menuOpen ? 'nav-links is-open' : 'nav-links'} aria-label="Main navigation"><a href="#work" onClick={() => setMenuOpen(false)}>Projects</a><a href="#about" onClick={() => setMenuOpen(false)}>About</a><a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a><a className="resume-link" href="/resume.pdf" download>Resume <span aria-hidden="true">🡇</span></a></nav>
         <a className="header-availability" href="#contact"><span className="status-dot" /> {profile.availability}</a>
         <button className="theme-toggle" type="button" onClick={() => setDarkMode(!darkMode)} aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}><span aria-hidden="true">{darkMode ? '☼' : '◐'}</span><small>{darkMode ? 'Light' : 'Dark'}</small></button>
       </header>
 
       <main id="top">
-        <section className="hero-section" aria-labelledby="hero-title"><div className="hero-copy"><p className="eyebrow">{profile.role}</p><h1 id="hero-title">Building ideas<br /><em>into software.</em></h1><p className="hero-intro">{profile.intro}</p><a className="arrow-link" href="#work">Explore my projects <span aria-hidden="true">-&gt;</span></a></div><div className="hero-visual" aria-label={`Portrait of ${profile.name}`}><div className="sun-disc" /><div className="portrait-frame"><img src="https://media.licdn.com/dms/image/v2/D4E03AQH_p6tQVhlNJA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1693192527556?e=1790812800&v=beta&t=Te39ThQ7L3riH8N6ISxy283eLZg0QzUkZW-iJmBEFbg" alt={`Portrait placeholder for ${profile.name}`} /></div><div className="hero-note">Based in<br /><strong>{profile.location}</strong></div><div className="hero-index">01 <span>/</span> 03</div></div></section>
+        <section className="hero-section" aria-labelledby="hero-title"><div className="hero-copy"><p className="eyebrow">{profile.role}</p><h1 id="hero-title">Building ideas<br /><em>into software.</em></h1><p className="hero-intro">{profile.intro}</p><a className="arrow-link" href="#work">Explore my projects <span aria-hidden="true">-&gt;</span></a></div><div className="hero-visual" aria-label={`${heroSlides[activeSlide].label} image slider`}><div className="sun-disc" /><div className="portrait-frame"><img key={heroSlides[activeSlide].image} src={heroSlides[activeSlide].image} alt={heroSlides[activeSlide].label} /></div><div className="hero-note">Based in<br /><strong>{profile.location}</strong></div><div className="hero-controls"><button type="button" onClick={() => setActiveSlide((activeSlide - 1 + heroSlides.length) % heroSlides.length)} aria-label="Previous image">←</button><div className="slide-dots">{heroSlides.map((slide, slideIndex) => <button className={slideIndex === activeSlide ? 'slide-dot active' : 'slide-dot'} type="button" key={slide.label} onClick={() => setActiveSlide(slideIndex)} aria-label={`Show ${slide.label}`} aria-current={slideIndex === activeSlide ? 'true' : undefined} />)}</div><button type="button" onClick={() => setActiveSlide((activeSlide + 1) % heroSlides.length)} aria-label="Next image">→</button></div><div className="hero-index">0{activeSlide + 1} <span>/</span> 0{heroSlides.length}</div></div></section>
 
         <section className="statement-section" aria-label="Development approach"><p className="section-label">A little context</p><div className="statement-copy"><p>Good software should feel <span>clear</span> - well-structured, useful, and built to make someone&apos;s day easier.</p></div><div className="statement-aside"><span className="asterisk" aria-hidden="true">*</span><p>Curious mind.<br />Clean code.<br />Always learning.</p></div></section>
 
@@ -38,7 +51,7 @@ function App() {
         <section className="contact-section" id="contact" aria-labelledby="contact-title"><div className="contact-stamp" aria-hidden="true">Let&apos;s<br />make<br /><em>something</em><br />matter.</div><div className="contact-copy"><p className="section-label">Have a good feeling?</p><h2 id="contact-title">Let&apos;s make<br /><em>something</em> together.</h2><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email} <span aria-hidden="true">-&gt;</span></a></div></section>
       </main>
 
-      <footer className="site-footer"><a className="wordmark" href="#top">{profile.initials}<span>.</span></a><p>Designed with intention, built for the long run.</p><div className="footer-links"><a href={profile.social.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={profile.social.github} target="_blank" rel="noreferrer">GitHub</a><a href={`mailto:${profile.email}`}>Email</a></div><span className="copyright">© 2024 {profile.name}</span></footer>
+      <footer className="site-footer"><a className="wordmark" href="#top">{profile.initials}<span>.</span></a><p>Designed with intention, built for the long run.</p><div className="footer-links"><a href={profile.social.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={profile.social.github} target="_blank" rel="noreferrer">GitHub</a><a href={`mailto:${profile.email}`}>Email</a></div><span className="copyright">© 2026 {profile.name}</span></footer>
     </div>
   )
 }

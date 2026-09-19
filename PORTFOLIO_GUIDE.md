@@ -18,6 +18,8 @@ The main editable content lives in **`src/content.ts`**. Start there:
 - `projects`: your portfolio project titles, descriptions, dates, tags, and image URLs
 - `skills`: the skills listed in the About section
 
+Your downloadable resume belongs at **`public/resume.pdf`**. Replace the placeholder file with your final PDF using the same filename. The Resume button in the header will then download the updated document automatically.
+
 You can also update these presentation details in **`src/App.tsx`**:
 
 - The hero headline: `Ideas made clear. Experiences made human.`
@@ -25,7 +27,7 @@ You can also update these presentation details in **`src/App.tsx`**:
 - The project filter labels
 - The footer copyright year
 
-Use local images later by placing them in `public/images/` and changing a project image to `/images/your-file.jpg`. This is more reliable than depending on an external image host.
+Use local images by placing them in `public/images/` and changing a project image to `/images/your-file.jpg`. Do not include `public/` in the browser path. This is more reliable than depending on an external image host.
 
 ## Light and dark mode
 
