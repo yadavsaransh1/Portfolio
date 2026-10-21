@@ -51,7 +51,7 @@ function App() {
         <section className="contact-section" id="contact" aria-labelledby="contact-title"><div className="contact-stamp" aria-hidden="true">Let&apos;s<br />make<br /><em>something</em><br />matter.</div><div className="contact-copy"><p className="section-label">Have a good feeling?</p><h2 id="contact-title">Let&apos;s make<br /><em>something</em> together.</h2><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email} <span aria-hidden="true">-&gt;</span></a></div></section>
       </main>
 
-      <footer className="site-footer"><a className="wordmark" href="#top">{profile.initials}<span>.</span></a><p>Designed with intention, built for the long run.</p><div className="footer-links"><a href={profile.social.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={profile.social.github} target="_blank" rel="noreferrer">GitHub</a><a href={`mailto:${profile.email}`}>Email</a></div><span className="copyright">© 2026 {profile.name}</span></footer>
+      <footer className="site-footer"><a className="wordmark" href="#top">{profile.initials}<span>.</span></a><p>Designed with intention, built for the long run.</p><div className="footer-links"><a href={profile.social.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={profile.social.github} target="_blank" rel="noreferrer">GitHub</a><a href={`mailto:${profile.email}`}>Email</a></div><span className="copyright">© 2026 {profile.name}<span className="visit-counter">Total visits<img src="https://api.visitorbadge.io/api/visitors?path=saransh-yadav-portfolio&label=&labelColor=%236c7168&countColor=%23e8674b" alt="Total site visits" /></span></span></footer>
     </div>
   )
 }
